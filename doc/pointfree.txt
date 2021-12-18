@@ -17,3 +17,5 @@ USAGE                                                         *pointfree-usage*
 
 With your cursor on the line of Haskell you want to transform, run `:Pointfree`
 to replace that line with the pointfree version.
+
+vim:tw=78:ts=8:ft=help:norl:
