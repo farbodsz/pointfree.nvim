@@ -1,0 +1,19 @@
+*pointfree.nvim*  pointfree.nvim
+
+The Haskell point-free tool inside Neovim!
+
+Author: Farbod Salamat-Zadeh
+
+==============================================================================
+
+INTRODUCTION                                           *pointfree-introduction*
+
+Vim's diff mode is pretty good, but there is no convenient way to quickly bring
+up all modified files in a diffsplit. This plugin aims to provide a simple,
+unified, single tabpage interface that lets you easily review all changed files
+for any git rev.
+
+USAGE                                                         *pointfree-usage*
+
+With your cursor on the line of Haskell you want to transform, run `:Pointfree`
+to replace that line with the pointfree version.
