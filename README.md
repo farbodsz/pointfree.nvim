@@ -6,6 +6,8 @@ Convert Haskell code into point-free Haskell code, within Neovim!
 
 This plugin lets you use the `pointfree` tool inside the editor.
 
+<img src="https://github.com/farbodsz/pointfree.nvim/blob/master/demo.gif?raw=true" alt="demo-gif" width="680" height="350">
+
 ## Installation
 
 Requirements:
