@@ -4,15 +4,16 @@ The Haskell point-free tool inside Neovim!
 
 Author:   Farbod Salamat-Zadeh
 License:  MIT
+Credits:  See |pointfree-credits|
 
 ==============================================================================
 
 INTRODUCTION                                          *pointfree-introduction*
 
-Vim's diff mode is pretty good, but there is no convenient way to quickly bring
-up all modified files in a diffsplit. This plugin aims to provide a simple,
-unified, single tabpage interface that lets you easily review all changed files
-for any git rev.
+Haskell programmers often write in pointfree style, which is considered
+cleaner. The existing tools for transforming a function definition into
+pointfree style are wonderful, but it would be even better if these were
+integrated into the text-editing experience.
 
 USAGE                                                 *pointfree-usage*
 
@@ -28,5 +29,13 @@ Here is an example configuration:
   nnoremap <leader>Hp :Pointfree<CR>
   vnoremap <leader>Hp :PointfreeSelection<CR>
 <
+
+CREDITS                                               *pointfree-credits*
+
+  - bmillwood/pointfree for the standalone version of the Haskell point-free
+    tool
+  - keathley/pointfree.io for the web version of this tool, which I have used
+    for the web version of this tool, which I have used countless times
+
 
 vim:tw=78:ts=8:ft=help:norl:
