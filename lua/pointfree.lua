@@ -45,6 +45,12 @@ function M.pointfree(is_visual_mode)
   local start_row, start_col, end_row, end_col
   if is_visual_mode then
     start_row, start_col, end_row, end_col = visual_selection_range()
+
+    -- When in visual mode, if we use $ to go to the end of the line, the
+    -- end_col is actually one more than what exists on the line, so adjust the
+    -- column position accordingly.
+    local lines = vim.api.nvim_buf_get_lines(0, start_row, end_row, false)
+    end_col = math.min(end_col, string.len(lines[#lines]))
   else
     local linenr = vim.api.nvim_win_get_cursor(0)[1]
     start_row, start_col, end_row, end_col = linenr - 1, nil, linenr, nil
