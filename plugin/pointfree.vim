@@ -11,12 +11,14 @@ endif
 let s:save_cpo = &cpo
 set cpo&vim
 
-command! Pointfree lua require'pointfree'.pointfree(false)
-command! -range PointfreeSelection '<,'>lua require'pointfree'.pointfree(true)
+command! Pointfree lua require'pointfree'.pointfree(false, false)
+command! -range PointfreeSelection '<,'>lua require'pointfree'.pointfree(true, false)
+
+command! PointfreeInfo lua require'pointfree'.pointfree(false, true)
+command! -range PointfreeSelectionInfo '<,'>lua require'pointfree'.pointfree(true, true)
 
 " Restore user options
 let &cpo = s:save_cpo
 unlet s:save_cpo
-
 
 let g:pointfree_nvim_loaded = 1

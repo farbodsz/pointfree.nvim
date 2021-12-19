@@ -9,6 +9,17 @@ local function err(msg)
   print(fmtmsg)
 end
 
+---Returns the maximum (width, height) of the lines collectively.
+---@return table
+local function get_lines_dimens(lines)
+  local height = #lines
+  local width = 0
+  for _, line in ipairs(lines) do
+    width = math.max(width, #line)
+  end
+  return width, height
+end
+
 ---Returns the start/end position of the current visual selection.
 ---@return table (start_row, start_col, end_row, end_col)
 local function visual_selection_range()
@@ -41,7 +52,7 @@ local function get_selection_text(start_row, start_col, end_row, end_col)
   return table.concat(lines, " ")
 end
 
-function M.pointfree(is_visual_mode)
+function M.pointfree(is_visual_mode, verbose)
   local start_row, start_col, end_row, end_col
   if is_visual_mode then
     start_row, start_col, end_row, end_col = visual_selection_range()
@@ -58,15 +69,46 @@ function M.pointfree(is_visual_mode)
 
   local selected = get_selection_text(start_row, start_col, end_row, end_col)
   local pf_input = string.format("%s", selected)
+  local cmdargs = verbose and { "--verbose", pf_input } or { pf_input }
 
   Job
     :new({
       command = "pointfree",
-      args = { pf_input },
+      args = cmdargs,
       cwd = vim.fn.getcwd(),
       on_exit = function(job, return_val)
         if return_val ~= 0 then
           return err(string.format("Unable to make pointfree: %s", pf_input))
+        end
+
+        if verbose then
+          return vim.schedule(function()
+            local curwin = vim.api.nvim_get_current_win()
+
+            local buf = vim.api.nvim_create_buf(false, true)
+            vim.api.nvim_buf_set_lines(buf, 0, -1, true, job:result())
+
+            -- TODO: Haskell syntax highlighting for output?
+            local win_width, win_height = get_lines_dimens(job:result())
+            local float_win = vim.api.nvim_open_win(buf, 0, {
+              relative = "cursor",
+              width = win_width,
+              height = win_height,
+              col = 0,
+              row = 1,
+              anchor = "NW",
+              focusable = false,
+              style = "minimal",
+            })
+
+            -- Don't focus floating window
+            vim.api.nvim_set_current_win(curwin)
+
+            -- TODO: close on CursorMoved
+            vim.defer_fn(function()
+              vim.api.nvim_win_close(float_win, true)
+            end, 2000)
+          end)
         end
 
         vim.schedule(function()
