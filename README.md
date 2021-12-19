@@ -1,10 +1,9 @@
 # pointfree.nvim
 
-![](https://img.shields.io/badge/status-unstable-orange)
+**Convert Haskell code into point-free Haskell code, within Neovim!**
 
-Convert Haskell code into point-free Haskell code, within Neovim!
-
-This plugin lets you use the `pointfree` tool inside the editor.
+This plugin lets you use the `pointfree` tool inside the editor, transforming
+the current line, or with a visual selection.
 
 <img src="https://github.com/farbodsz/pointfree.nvim/blob/master/demo.gif?raw=true" alt="demo-gif" width="600" height="650">
 
@@ -12,21 +11,25 @@ This plugin lets you use the `pointfree` tool inside the editor.
 
 Requirements:
 
-- [`pointfree`](https://hackage.haskell.org/package/pointfree) package:
-  ```sh
-  $ stack install pointfree
-  ```
+- [`pointfree`](https://hackage.haskell.org/package/pointfree) package
+  (e.g. `stack install pointfree`)
 - [`plenary.nvim`](https://github.com/nvim-lua/plenary.nvim) plugin
 
 Then, add this plugin using your favourite Neovim package manager:
 
 ```lua
-use({ "farbodsz/pointfree.nvim", requires = "nvim-lua/plenary.nvim" })
+use({
+  "farbodsz/pointfree.nvim",
+  requires = "nvim-lua/plenary.nvim",
+  ft = "haskell"
+})
 ```
 
 ## Usage
 
 - Run `:Pointfree` to replace your current line with the pointfree version
+- In visual mode, use `:PointfreeSelection` to replace your selection with the
+  pointfree version
 
 ## About
 
