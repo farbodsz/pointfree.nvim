@@ -25,7 +25,7 @@ end
 ---@param start_col integer|nil
 ---@param end_row integer
 ---@param end_col integer|nil
----@return string the text within the given range
+---@return string the text within the given range, flattened onto a single line
 local function get_selection_text(start_row, start_col, end_row, end_col)
   local lines = vim.api.nvim_buf_get_lines(0, start_row, end_row, false)
   for i, line in ipairs(lines) do
@@ -39,6 +39,13 @@ local function get_selection_text(start_row, start_col, end_row, end_col)
     lines[i] = string.sub(line, sub_start, sub_end)
   end
   return table.concat(lines, " ")
+end
+
+---Returns the characters preceding the first non-space character in the line.
+---@param line string the first line of the input
+---@return string a (possibly empty) prefix string
+local function get_indent_prefix(line)
+  return string.match(line, "^(%s*)")
 end
 
 function M.pointfree(is_visual_mode)
@@ -57,6 +64,7 @@ function M.pointfree(is_visual_mode)
   end
 
   local selected = get_selection_text(start_row, start_col, end_row, end_col)
+  local indent_prefix = get_indent_prefix(selected)
   local pf_input = string.format("%s", selected)
 
   Job
@@ -70,23 +78,20 @@ function M.pointfree(is_visual_mode)
         end
 
         vim.schedule(function()
+          ---@type string[]
+          local output = job:result()
+          output[1] = indent_prefix .. output[1]
+
           if not start_col and not end_col then
-            vim.api.nvim_buf_set_lines(
-              0,
-              start_row,
-              end_row,
-              false,
-              job:result()
-            )
+            vim.api.nvim_buf_set_lines(0, start_row, end_row, false, output)
           else
-            -- Single line output since we flattened multi line input
             vim.api.nvim_buf_set_text(
               0,
               start_row,
               start_col - 1,
               end_row - 1,
               end_col,
-              job:result()
+              output
             )
           end
         end)
