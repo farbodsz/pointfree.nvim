@@ -5,8 +5,10 @@ local M = {}
 ---Prints a message formatted as an error.
 ---@param msg string
 local function err(msg)
-  local fmtmsg = string.format("[pointfree.nvim] ERROR: %s", msg)
-  print(fmtmsg)
+  local fmtmsg = string.format("[pointfree.nvim] %s", msg)
+  vim.schedule(function()
+    vim.api.nvim_notify(fmtmsg, vim.log.levels.ERROR, {})
+  end)
 end
 
 ---Returns the start/end position of the current visual selection.
