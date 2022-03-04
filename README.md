@@ -48,6 +48,14 @@ integrated into the text-editing experience.
 - [keathley/pointfree.io](https://github.com/keathley/pointfree.io) for the web
   version of this tool, which I have used countless times
 
+### See also
+
+There are a couple similar Vim plugins which I was unaware of when developing
+this one. These work slightly differently to this plugin:
+
+- [m00qek/vim-pointfree](https://github.com/m00qek/vim-pointfree)
+- [vmchale/pointfree](https://github.com/vmchale/pointfree)
+
 ### License
 
 This plugin is licensed under the
